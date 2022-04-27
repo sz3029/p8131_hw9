@@ -1,0 +1,14 @@
+---
+title: "P8131 HW9"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(flexsurv)
+library(survival)
+library(MASS)
+```
+
+
+
