@@ -9,14 +9,18 @@ library(flexsurv)
 library(survival)
 library(MASS)
 library(survminer)
+library(KMsurv)
 library(tidyverse)
 ```
 
 # 3. Tongue data
 
-Tumor type: 
+Data Description:
+
 * `type`: Tumor DNA profile (1=Aneuploid Tumor, 2=Diploid Tumor)
+
 * `time`: Time to death or on-study time, weeks
+
 * `delta` Death indicator (0: censored/alive, 1: observed/dead)
 
 ```{r input}
