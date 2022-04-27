@@ -8,7 +8,37 @@ knitr::opts_chunk$set(echo = TRUE)
 library(flexsurv)
 library(survival)
 library(MASS)
+library(survminer)
+library(tidyverse)
 ```
 
+# 3. Tongue data
 
+Tumor type: 
+* `type`: Tumor DNA profile (1=Aneuploid Tumor, 2=Diploid Tumor)
+* `time`: Time to death or on-study time, weeks
+* `delta` Death indicator (0: censored/alive, 1: observed/dead)
+
+```{r input}
+data(tongue)
+tongue <- tongue %>%
+  mutate(type = ifelse(type == 1, "aneuploidy", "diploid"))
+Surv(tongue$time,tongue$delta,type='right') # 0: censored, 1: observed
+```
+
+For each tumor type (aneuploidy and diploid), plot the Kaplan-Meier curve of survival function and its pointwise 95% confidence intervals (using the log transformation). 
+
+```{r}
+#survdiff(Surv(time,cens)~treat, data=gehan) # log rank test
+survival.fit <- survfit(Surv(time,delta)~type, data = tongue, conf.type='log')
+ggsurvplot(survival.fit, conf.int=TRUE)
+```
+The estimated 1-year survival rate and 95% CI:
+
+```{r}
+summary(survival.fit,time=c(365/7))
+```
+
+The estimated 1-year survival rate for patients with aneuploid tumor is about $0.654$, with 95% CI $[0.537, 0.797]$,
+and the estimated 1-year survival rate for patients with diploid tumor is about $0.4864$, with 95% CI $[0.3302, 0.7164]$.
 
